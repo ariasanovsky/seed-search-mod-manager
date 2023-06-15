@@ -2,6 +2,8 @@ use std::process::Command;
 
 use crate::SearcResults;
 
+mod parse;
+
 impl super::GameHome {
     fn search(&self) -> Result<SearcResults, std::io::Error> {
 
