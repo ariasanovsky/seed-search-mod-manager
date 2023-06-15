@@ -21,6 +21,23 @@ enum Error {
 }
 
 #[derive(Debug)]
-struct SearcResult {
+struct SearcResults {
     output: String,
+}
+
+#[derive(Debug, PartialEq)]
+struct SearchResult {
+    seed_string: String,
+    seed: i64,
+    neow_options: Vec<String>,
+    bosses: Vec<String>,
+    true_map_path: Vec<String>,
+    events: Vec<String>,
+    card_choices: Vec<Vec<(usize, String)>>,
+    potions: Vec<Vec<(usize, String)>>,
+    commons: Vec<String>,
+    uncommons: Vec<String>,
+    rares: Vec<String>,
+    boss_relics: Vec<String>,
+    shops: Vec<String>,
 }
