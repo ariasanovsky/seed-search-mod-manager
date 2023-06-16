@@ -5,6 +5,7 @@ const _DEFAULT_HOME: &str = "C:/Program Files (x86)/Steam/steamapps/common/SlayT
 mod game_home;
 mod search_config;
 mod search_result;
+mod verification_config;
 
 #[derive(Debug)]
 struct GameHome {

@@ -6,12 +6,10 @@ use crate::GameHome;
 
 #[allow(non_snake_case)]
 #[derive(Debug, Deserialize, Serialize)]
-struct SearchConfig {
+struct VerificationConfig {
     ascensionLevel: i32,
     playerClass: String,
-    startSeed: i32,
-    endSeed: i32,
-    verbose: bool,
+    alphanumericSeed: String,
     exitAfterSearch: bool,
     highestFloor: i32,
     ironcladUnlocks: i32,
@@ -103,7 +101,7 @@ enum Error {
     Json(serde_json::Error),
 }
 
-impl FromStr for SearchConfig {
+impl FromStr for VerificationConfig {
     type Err = serde_json::Error;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
@@ -124,17 +122,17 @@ impl From<serde_json::Error> for Error {
 }
 
 impl GameHome {
-    fn search_config_path(&self) -> Option<PathBuf> {
+    fn verification_config_path(&self) -> Option<PathBuf> {
         Some(
             self.home
-            .join("searchConfig.json")
+            .join("verificationConfig.json")
         )
         .filter(|path| path.exists())
     }
 
-    fn search_config(&self) -> Option<Result<SearchConfig, Error>> {
+    fn verification_config(&self) -> Option<Result<VerificationConfig, Error>> {
         self
-        .search_config_path()
+        .verification_config_path()
         .map(std::fs::read_to_string)
         .map(|path| {
             path?
@@ -154,7 +152,7 @@ mod test_parse_search_config {
     fn default_search_config_path() {
         let home = PathBuf::from(_DEFAULT_HOME);
         let game_home = GameHome::try_from(home).unwrap();
-        let search_config = game_home.search_config_path().unwrap();
+        let search_config = game_home.verification_config_path().unwrap();
         dbg!(search_config);
     }
 
@@ -162,7 +160,7 @@ mod test_parse_search_config {
     fn default_search_config() {
         let home = PathBuf::from(_DEFAULT_HOME);
         let game_home = GameHome::try_from(home).unwrap();
-        let search_config = game_home.search_config().unwrap().unwrap();
+        let search_config = game_home.verification_config().unwrap().unwrap();
         dbg!(search_config);
     }
 }

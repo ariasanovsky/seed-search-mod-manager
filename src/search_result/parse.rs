@@ -2,7 +2,9 @@ use nom::{
     IResult,
     bytes::complete::{take_until, tag, take_while},
     sequence::{terminated, Tuple, preceded, delimited},
-    multi::{many0, self}, character::complete::{char, multispace0}, Parser, combinator::opt
+    multi::many0,
+    character::complete::{char, multispace0},
+    Parser
 };
 
 use crate::SearchResult;
