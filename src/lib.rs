@@ -21,8 +21,7 @@ enum Error {
     InvalidModTheSpire,
 }
 
-#[derive(Debug)]
-struct SearcResults {
+struct SearchResults {
     output: String,
 }
 

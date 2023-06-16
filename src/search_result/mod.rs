@@ -1,11 +1,11 @@
 use std::process::Command;
 
-use crate::SearcResults;
+use crate::SearchResults;
 
 mod parse;
 
 impl super::GameHome {
-    fn search(&self) -> Result<SearcResults, std::io::Error> {
+    fn search(&self) -> Result<SearchResults, std::io::Error> {
 
         dbg!(&self);
 
@@ -20,7 +20,7 @@ impl super::GameHome {
         .arg("tee")
         .output()?;
 
-        Ok(SearcResults {
+        Ok(SearchResults {
             output: String::from_utf8_lossy(&output.stdout).into(),
         })
     }

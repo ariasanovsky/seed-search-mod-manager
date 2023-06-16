@@ -4,7 +4,7 @@ use nom::{
     sequence::{terminated, Tuple, preceded, delimited},
     multi::many0,
     character::complete::{char, multispace0},
-    Parser
+    Parser, combinator::opt
 };
 
 use crate::SearchResult;
@@ -161,14 +161,14 @@ fn gobble_around_raw_relic_lists(input: &str) -> IResult<&str, [Vec<String>; 5]>
 
 fn parse_search_results(input: &str) -> IResult<&str, Vec<SearchResult>> {
     let (input, _) = take_until("Seed:")(input)?;
-    let (input, (x, y)) = (
+    let (input, (search_results, _)) = (
         many0(terminated(
             parse_search_result,
             multispace0
         )),
-        parse_seed_list
+        opt(parse_seed_list)
     ).parse(input)?;
-    Ok((input, x))
+    Ok((input, search_results))
 }
 
 fn parse_search_result(input: &str) -> IResult<&str, SearchResult> {
