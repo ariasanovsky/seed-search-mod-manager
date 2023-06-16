@@ -1,5 +1,5 @@
 [package]
-name = "seed-search-mod-manager"
+name = "spire-search-mod-wrapper"
 version = "0.1.1"
 edition = "2021"
 
