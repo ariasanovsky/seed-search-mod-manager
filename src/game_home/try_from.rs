@@ -1,6 +1,7 @@
 use std::path::{PathBuf, Path};
 
-use crate::{GameHome, Error};
+use crate::GameHome;
+use super::Error;
 
 impl TryFrom<PathBuf> for GameHome {
     type Error = Error;

@@ -8,25 +8,14 @@ mod search_result;
 mod verification_config;
 
 #[derive(Debug)]
-struct GameHome {
+pub struct GameHome {
     home: PathBuf,
     java_w: PathBuf,
     mod_the_spire: PathBuf,
 }
 
-#[derive(Debug)]
-enum Error {
-    InvalidHome,
-    InvalidJavaW,
-    InvalidModTheSpire,
-}
-
-struct SearchResults {
-    output: String,
-}
-
 #[derive(Debug, PartialEq)]
-struct SearchResult {
+pub struct SearchResult {
     seed_string: String,
     seed: String,
     neow_options: Vec<String>,

@@ -159,7 +159,7 @@ fn gobble_around_raw_relic_lists(input: &str) -> IResult<&str, [Vec<String>; 5]>
 
 }
 
-fn parse_search_results(input: &str) -> IResult<&str, Vec<SearchResult>> {
+pub(super) fn parse_search_results(input: &str) -> IResult<&str, Vec<SearchResult>> {
     let (input, _) = take_until("Seed:")(input)?;
     let (input, (search_results, _)) = (
         many0(terminated(
@@ -269,7 +269,7 @@ mod test_parse_search_results {
         let home: GameHome = PathBuf::from(_DEFAULT_HOME)
         .try_into().unwrap();
         let search = home.search().unwrap();
-        let results = parse_search_results(&search.output).unwrap();
+        let results = parse_search_results(&search).unwrap();
         dbg!(results);
     }
 }

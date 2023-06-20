@@ -1,14 +1,36 @@
 use std::process::Command;
 
-use crate::SearchResults;
+use crate::SearchResult;
 
 mod parse;
 
+#[derive(Debug)]
+enum Error {
+    Io(std::io::Error),
+    Utf8(std::string::FromUtf8Error),
+    Nom(String),
+}
+
+impl From<std::io::Error> for Error {
+    fn from(value: std::io::Error) -> Self {
+        Self::Io(value)
+    }
+}
+
+impl From<std::string::FromUtf8Error> for Error {
+    fn from(value: std::string::FromUtf8Error) -> Self {
+        Self::Utf8(value)
+    }
+}
+
+impl From<nom::Err<nom::error::Error<&str>>> for Error {
+    fn from(value: nom::Err<nom::error::Error<&str>>) -> Self {
+        Self::Nom(value.to_string())
+    }
+}
+
 impl super::GameHome {
-    fn search(&self) -> Result<SearchResults, std::io::Error> {
-
-        dbg!(&self);
-
+    fn search(&self) -> Result<String, Error> {
         let output = Command::new(&self.java_w)
         .current_dir(&self.home)
         .arg("-jar")
@@ -18,11 +40,16 @@ impl super::GameHome {
         .arg("SeedSearch")
         .arg("|")
         .arg("tee")
-        .output()?;
+        .output()
+        .map(|output| output.stdout)?;
+        
+        Ok(String::from_utf8(output)?)
+    }
 
-        Ok(SearchResults {
-            output: String::from_utf8_lossy(&output.stdout).into(),
-        })
+    fn search_results(&self) -> Result<Vec<SearchResult>, Error> {
+        let search = self.search()?;
+        let (_, search_results) = parse::parse_search_results(&search)?;
+        Ok(search_results)
     }
 }
 
@@ -39,7 +66,7 @@ mod test_game_home {
         .try_into().unwrap();
 
         let search = home.search().unwrap();
-        for line in search.output.lines() {
+        for line in search.lines() {
             println!("{line}");
         }
     }
