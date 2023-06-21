@@ -6,7 +6,7 @@ use crate::GameHome;
 
 #[allow(non_snake_case)]
 #[derive(Debug, Deserialize, Serialize)]
-struct VerificationConfig {
+pub struct VerificationConfig {
     ascensionLevel: i32,
     playerClass: String,
     alphanumericSeed: String,
@@ -96,7 +96,7 @@ struct VerificationConfig {
 }
 
 #[derive(Debug)]
-enum Error {
+pub enum Error {
     Io(std::io::Error),
     Json(serde_json::Error),
 }
@@ -122,7 +122,7 @@ impl From<serde_json::Error> for Error {
 }
 
 impl GameHome {
-    fn verification_config_path(&self) -> Option<PathBuf> {
+    pub fn verification_config_path(&self) -> Option<PathBuf> {
         Some(
             self.home
             .join("verificationConfig.json")
@@ -130,7 +130,7 @@ impl GameHome {
         .filter(|path| path.exists())
     }
 
-    fn verification_config(&self) -> Option<Result<VerificationConfig, Error>> {
+    pub fn verification_config(&self) -> Option<Result<VerificationConfig, Error>> {
         self
         .verification_config_path()
         .map(std::fs::read_to_string)

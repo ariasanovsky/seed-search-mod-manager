@@ -5,7 +5,7 @@ use crate::SearchResult;
 mod parse;
 
 #[derive(Debug)]
-enum Error {
+pub enum Error {
     Io(std::io::Error),
     Utf8(std::string::FromUtf8Error),
     Nom(String),
@@ -30,7 +30,7 @@ impl From<nom::Err<nom::error::Error<&str>>> for Error {
 }
 
 impl super::GameHome {
-    fn search(&self) -> Result<String, Error> {
+    pub fn search_output(&self) -> Result<String, Error> {
         let output = Command::new(&self.java_w)
         .current_dir(&self.home)
         .arg("-jar")
@@ -46,8 +46,8 @@ impl super::GameHome {
         Ok(String::from_utf8(output)?)
     }
 
-    fn search_results(&self) -> Result<Vec<SearchResult>, Error> {
-        let search = self.search()?;
+    pub fn search_results(&self) -> Result<Vec<SearchResult>, Error> {
+        let search = self.search_output()?;
         let (_, search_results) = parse::parse_search_results(&search)?;
         Ok(search_results)
     }
@@ -65,7 +65,7 @@ mod test_game_home {
         PathBuf::from(_DEFAULT_HOME)
         .try_into().unwrap();
 
-        let search = home.search().unwrap();
+        let search = home.search_output().unwrap();
         for line in search.lines() {
             println!("{line}");
         }

@@ -6,7 +6,7 @@ use crate::GameHome;
 
 #[allow(non_snake_case)]
 #[derive(Debug, Deserialize, Serialize)]
-struct SearchConfig {
+pub struct SearchConfig {
     ascensionLevel: i32,
     playerClass: String,
     startSeed: i32,
@@ -98,7 +98,7 @@ struct SearchConfig {
 }
 
 #[derive(Debug)]
-enum Error {
+pub enum Error {
     Io(std::io::Error),
     Json(serde_json::Error),
 }
@@ -124,7 +124,7 @@ impl From<serde_json::Error> for Error {
 }
 
 impl GameHome {
-    fn search_config_path(&self) -> Option<PathBuf> {
+    pub fn search_config_path(&self) -> Option<PathBuf> {
         Some(
             self.home
             .join("searchConfig.json")
@@ -132,7 +132,7 @@ impl GameHome {
         .filter(|path| path.exists())
     }
 
-    fn search_config(&self) -> Option<Result<SearchConfig, Error>> {
+    pub fn search_config(&self) -> Option<Result<SearchConfig, Error>> {
         self
         .search_config_path()
         .map(std::fs::read_to_string)

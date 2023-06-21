@@ -250,7 +250,7 @@ fn parse_neow_options(input: &str) -> IResult<&str, Vec<String>> {
 }
 
 fn parse_seed_list(input: &str) -> IResult<&str, Vec<String>> {
-    let (input, prefix) = (
+    let (input, _) = (
         take_while(char::is_numeric),
         tag(" seeds found:"),
         multispace0
@@ -268,7 +268,7 @@ mod test_parse_search_results {
     fn parse_default_search_results() {
         let home: GameHome = PathBuf::from(_DEFAULT_HOME)
         .try_into().unwrap();
-        let search = home.search().unwrap();
+        let search = home.search_output().unwrap();
         let results = parse_search_results(&search).unwrap();
         dbg!(results);
     }
